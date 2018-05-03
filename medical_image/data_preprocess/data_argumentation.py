@@ -37,8 +37,10 @@ if __name__ == '__main__':
     my_data_argu = DataArgumentation()
     import cv2
     image = cv2.imread('1.jpeg', cv2.IMREAD_GRAYSCALE)
-    # cv2.imshow('image', image)
-    # cv2.waitKey(0)
+    cv2.imshow('image', image)
+    cv2.waitKey(0)
     img = image.reshape((1,) + image.shape + (1,))
     images, labels = my_data_argu.do_argumentation(img, 1, 3)
     print(len(images))
+    cv2.imwrite('1s.jpeg', images)
+
