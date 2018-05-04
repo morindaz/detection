@@ -88,13 +88,13 @@ if __name__ == '__main__':
         for x_batch in image_datagen.flow(x,batch_size=1,save_to_dir=img_output_dir,save_prefix="img_gen"+str(idx),
                                           save_format="jpg",seed=1):
             i +=1
-            if i>20:
+            if i>30:
                 break
         i = 0
         for  y_batch in image_datagen.flow(y, batch_size=1, save_to_dir=mask_output_dir, save_prefix="mask_gen"+str(idx),
                                             save_format="jpg", seed=1):
             i += 1
-            if i > 20:
+            if i > 30:
                 break
 
 
