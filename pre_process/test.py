@@ -1,7 +1,7 @@
 # from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 import cv2
-
-img = cv2.imread("./img_origin//1.jpeg",0)
+import os
+img = cv2.imread(".//mask_gen0_0_840.jpg",0)
 img2 = cv2.resize(img, (512, 512), interpolation=cv2.INTER_CUBIC)
 print(img.shape)
 # change = array_to_img(img)

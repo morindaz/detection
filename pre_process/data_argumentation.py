@@ -61,33 +61,41 @@ class DataArgumentation(object):
 
 
 if __name__ == '__main__':
-    input_dir = "./label/img_origin"
-    output_dir2 = "./label/img_generator"
-    output_dir = "./image/img_generator"
-    origin_img = glob.glob(input_dir+"/*")
-
+    img_input_dir = "./image/img_origin"
+    mask_input_dir = "./label/img_origin"
+    img_output = "./image/img_generator//"
+    mask_output = "./label/img_generator//"
+    img_origin = glob.glob(img_input_dir+"/*")
+    mask_origin = glob.glob(mask_input_dir+"/*")
     my_data_argu = DataArgumentation()
     image_datagen = my_data_argu.image_data_generator()
-    image_x = "./image/img_origin/2.jpg"
-    image_y = "./label/img_origin/2.jpg"
-    img_x = load_img(image_x)
-    img_y = load_img(image_y)
-    x = img_to_array(img_x)
-    y = img_to_array(img_y)
-    x = x.reshape((1,)+x.shape)
-    y = y.reshape((1,)+y.shape)
-    i = 0
-
-    for x_batch in image_datagen.flow(x,batch_size=1,save_to_dir=output_dir,save_prefix="gen",save_format="jpg",seed=1):
-        i +=1
-        if i>20:
-            break
-    i = 0
-    for  y_batch in image_datagen.flow(y, batch_size=1, save_to_dir=output_dir2, save_prefix="gen",
-                                               save_format="jpg", seed=1):
-        i += 1
-        if i > 20:
-            break
+    for idx in range(len(img_origin)):
+        img_output_dir = img_output+str(idx+1)
+        mask_output_dir = mask_output+str(idx+1)
+        if not os.path.lexists(img_output_dir):
+            os.mkdir(img_output_dir)
+        if not os.path.lexists(mask_output_dir):
+            os.mkdir(mask_output_dir)
+        image_x = img_origin[idx]
+        image_y = mask_origin[idx]
+        img_x = load_img(image_x)
+        img_y = load_img(image_y)
+        x = img_to_array(img_x)
+        y = img_to_array(img_y)
+        x = x.reshape((1,)+x.shape)
+        y = y.reshape((1,)+y.shape)
+        i = 0
+        for x_batch in image_datagen.flow(x,batch_size=1,save_to_dir=img_output_dir,save_prefix="img_gen"+str(idx),
+                                          save_format="jpg",seed=1):
+            i +=1
+            if i>20:
+                break
+        i = 0
+        for  y_batch in image_datagen.flow(y, batch_size=1, save_to_dir=mask_output_dir, save_prefix="mask_gen"+str(idx),
+                                            save_format="jpg", seed=1):
+            i += 1
+            if i > 20:
+                break
 
 
     # datagen = my_data_argu.image_data_generator()
