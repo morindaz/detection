@@ -62,20 +62,31 @@ class DataArgumentation(object):
 
 if __name__ == '__main__':
     input_dir = "./label/img_origin"
-    output_dir = "./label/img_generator"
+    output_dir2 = "./label/img_generator"
+    output_dir = "./image/img_generator"
     origin_img = glob.glob(input_dir+"/*")
 
     my_data_argu = DataArgumentation()
-    data_gen = my_data_argu.image_data_generator()
-
-    image = "./label/img_origin/1.jpg"
-    img = load_img(image)
-    x = img_to_array(img)
+    image_datagen = my_data_argu.image_data_generator()
+    image_x = "./image/img_origin/2.jpg"
+    image_y = "./label/img_origin/2.jpg"
+    img_x = load_img(image_x)
+    img_y = load_img(image_y)
+    x = img_to_array(img_x)
+    y = img_to_array(img_y)
     x = x.reshape((1,)+x.shape)
+    y = y.reshape((1,)+y.shape)
     i = 0
-    for batch in data_gen.flow(x,batch_size=1,save_to_dir=output_dir,save_prefix="gen",save_format="jpg"):
+
+    for x_batch in image_datagen.flow(x,batch_size=1,save_to_dir=output_dir,save_prefix="gen",save_format="jpg",seed=1):
         i +=1
         if i>20:
+            break
+    i = 0
+    for  y_batch in image_datagen.flow(y, batch_size=1, save_to_dir=output_dir2, save_prefix="gen",
+                                               save_format="jpg", seed=1):
+        i += 1
+        if i > 20:
             break
 
 
