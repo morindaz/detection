@@ -1,2 +1,4 @@
 *.jpg
+*.hdf5
+*.png
 .idea
