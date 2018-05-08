@@ -1,14 +1,15 @@
 from unet import *
 # from data_process import *
-from data import *
+# from data import *
 
 def save_img():
     print("array to image")
     imgs = np.load('./test_image/imgs_mask_test.npy')
+    imgs_index = np.load('./npydata/imgs_test_index.npy')
     for i in range(imgs.shape[0]):
         img = imgs[i]
         img = array_to_img(img)
-        img.save("./test_image/%d.jpg" % (i))
+        img.save("./test_image/%s" % (imgs_index[i]))
 
 mydata = dataProcess(512,512)
 

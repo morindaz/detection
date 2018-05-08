@@ -5,14 +5,14 @@ from sklearn.metrics import log_loss, confusion_matrix
 
 sys.path.append('../../DenseNet-Keras')
 
-from load_data import load_data
+from keras_models.vgg.load_data import load_data
 from keras.optimizers import SGD
 from keras.applications.vgg16 import VGG16
 from keras import models
 from keras import layers
 from keras import optimizers
 from keras.optimizers import SGD
-from keras.applications.vgg16 import VGG16
+from keras.applications.inception_v3 import InceptionV3
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 config = tf.ConfigProto()
@@ -35,26 +35,26 @@ if __name__ == '__main__':
     nb_epoch = 20
     train_ratio = 0.7
 
-    X_train, Y_train, X_valid, Y_valid,_ = load_data('./train_img/ap_train_1', './train_img/ap_label.xlsx', (img_rows, img_cols), num_classes, train_ratio)
+    X_train, Y_train, X_valid, Y_valid,_ = load_data('/home/maoshunyi/moyamoya/test_image', '/home/maoshunyi/moyamoya/train_img/ap_label.xlsx', (img_rows, img_cols), num_classes, train_ratio)
     # Load our model
 
     image_size = 224
-    vgg_conv = VGG16(weights=None,include_top=False, input_shape=(image_size, image_size, 1), classes=num_classes)
-    print(vgg_conv.summary())
+    inceptionV3_conv = InceptionV3(weights=None,include_top=False, input_shape=(image_size, image_size, 1), classes=num_classes)
+    print(inceptionV3_conv.summary())
 
     # Freeze the layers except the last 4 layers
-    for layer in vgg_conv.layers[:-4]:
-        layer.trainable = False
-    vgg_conv.layers[0].trainable = True
+    # for layer in inceptionV3_conv.layers[:-4]:
+    #     layer.trainable = False
+    #     inceptionV3_conv.layers[0].trainable = True
     # Check the trainable status of the individual layers
-    for layer in vgg_conv.layers:
+    for layer in inceptionV3_conv.layers:
         print(layer, layer.trainable)
 
     # Create the model
     model = models.Sequential()
 
     # Add the vgg convolutional base model
-    model.add(vgg_conv)
+    model.add(inceptionV3_conv)
 
     # Add new layers
     model.add(layers.Flatten())

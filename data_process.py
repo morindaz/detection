@@ -135,8 +135,8 @@ class myAugmentation(object):
 
 
 class dataProcess(object):
-    def __init__(self, out_rows, out_cols, data_path="./data/train/image", label_path="./data/train/label",
-                 test_path="./data/test", npy_path="./npydata", img_type="jpg"):
+    def __init__(self, out_rows, out_cols, data_path="/home/maoshunyi/moyamoya/train_img/ap_train_1", label_path="./data/train/label",
+                 test_path="/home/maoshunyi/moyamoya/train_img/ap_train_1", npy_path="./npydata", img_type="jpeg"):
 
         """
 
@@ -160,7 +160,7 @@ class dataProcess(object):
         imgdatas = np.ndarray((len(imgs), self.out_rows, self.out_cols, 1), dtype=np.uint8)
         imglabels = np.ndarray((len(imgs), self.out_rows, self.out_cols, 1), dtype=np.uint8)
         for imgname in imgs:
-            midname = imgname[imgname.rindex("\\") + 1:]
+            midname = imgname[imgname.rindex("/") + 1:]
             # img = load_img(self.data_path + "/" + midname,grayscale = True)
             img = cv2.imread(self.data_path + "/" + midname, 0)
             # label = load_img(self.label_path + "/" + midname,grayscale = True)
@@ -198,8 +198,9 @@ class dataProcess(object):
         imgs = glob.glob(self.test_path + "/*." + self.img_type)
         print(len(imgs))
         imgdatas = np.ndarray((len(imgs), self.out_rows, self.out_cols, 1), dtype=np.uint8)
+        imgs_index = []
         for imgname in imgs:
-            midname = imgname[imgname.rindex("\\") + 1:]
+            midname = imgname[imgname.rindex("/") + 1:]
             img = cv2.imread(self.test_path + "/" + midname)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             # cvtColor(img, img, COLOR_BGR2GRAY)
@@ -211,9 +212,11 @@ class dataProcess(object):
             # img = cv2.imread(self.test_path + "/" + midname,cv2.IMREAD_GRAYSCALE)
             # img = np.array([img])
             imgdatas[i] = img.reshape((512, 512, 1))
+            imgs_index.append(midname)
             i += 1
         print('loading done')
         np.save(self.npy_path + '/imgs_test.npy', imgdatas)
+        np.save(self.npy_path + '/imgs_test_index.npy', np.array(imgs_index, dtype=np.str_))
         print('Saving to imgs_test.npy files done.')
 
     def load_train_data(self):
