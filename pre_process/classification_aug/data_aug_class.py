@@ -5,7 +5,10 @@ from keras.preprocessing.image import ImageDataGenerator,load_img,img_to_array
 import pandas as pd
 import os
 import cv2
+import numpy as np
 import glob
+import itertools
+
 
 class DataAugumentation(object):
     def __init__(self):
@@ -46,12 +49,24 @@ def gen_images(data,type_all,aug_amount,img_input_dir, img_output):
                 count = 0
                 for x_batch in image_datagen.flow(x, batch_size=1, save_to_dir=img_output_dir, save_prefix="img_gen" + str(type),
                                                   save_format="jpg"):
-                    add_names.append("added_{}_{}".format(str(count), str(image_name[i])))
+                    # add_names.append("added_{}_{}".format(str(count), str(image_name[i])))
                     add_type.append(type)
                     add_address.append(img_output_dir)
                     count += 1
                     if count > aug_amount:
                         break
+        img_generated = glob.glob(img_output_dir + "/*")
+        if img_generated != []:
+            add_names.append(img_generated)
+    add_names = list(itertools.chain.from_iterable(add_names))
+    for i in range(len(add_names)):
+        _, img_name = os.path.split(add_names[i])
+        add_names[i] = img_name
+
+    # add_names = np.
+    print(len(add_names))
+    print(len(add_type))
+    print(len(add_address))
     df = {"filename": add_names, "type": add_type, "address": add_address}
     output = pd.DataFrame(df)
     output.to_csv(output_name)
@@ -62,13 +77,13 @@ def gen_images(data,type_all,aug_amount,img_input_dir, img_output):
 
 if __name__ == '__main__':
 
-    data_file = "./ap_move.xlsx"  # label file
+    data_file = "./train_img//ap_label.xlsx"  # label file
     data = pd.read_excel(data_file, header=0)
-    img_input_dir = "./image_origin//"
+    img_input_dir = "./test_image//"
     img_output = "./image_gen//"
 
     type_all = [4, 5, 6, 7, 8, 9, 10]  # The types need to be augumented
-    aug_amount = 5  # add images anount
+    aug_amount = 25  # add images anount
     gen_images(data,type_all,aug_amount,img_input_dir,img_output)
 
 
