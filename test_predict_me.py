@@ -1,3 +1,7 @@
+'''
+This file is used for loading the existing hdf5 and then save the predicted images
+to the file.
+'''
 from unet import *
 # from data_process import *
 # from data import *

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
+#created by zhenfang
 # -*- coding: utf-8 -*-
-import random
 
 import cv2
 import numpy as np
@@ -8,7 +8,7 @@ import keras.backend as K
 from keras.utils import np_utils
 import os
 import pandas as pd
-from pre_process.data_argumentation import DataArgumentation
+from pre_process.unet_augumentation.data_argumentation_unet import DataArgumentation
 
 artery_label_dict = {
     'AP_LICA': 0,
