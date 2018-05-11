@@ -1,3 +1,9 @@
+"""
+There's a failure in the data_aug_class file when trying to save the
+file_name,type and path.
+The file name is not the same length as the others.
+But when I run locally, it's fine. However, there's some bugs on the server
+"""
 import glob
 import os
 import pandas as pd

@@ -1,5 +1,10 @@
 *.jpg
+*.jpeg
+*.png
+*.pyc
 *.hdf5
 *.png
 .idea
 .cache
+*.pyc
+*.zip

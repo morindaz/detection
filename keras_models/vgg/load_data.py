@@ -175,7 +175,7 @@ def load_data(data_dir, label_file, resize, num_classes, train_ratio):
         img_sample = img_sample[:, :, np.newaxis]
         imgs[counter] = img_sample
         counter += 1
-        if label_file.startswith('ap'):
+        if 'ap' in label_file:
             if file_label > 10:
                 file_label = file_label - 11
         else:

@@ -29,12 +29,12 @@ if __name__ == '__main__':
 
     img_rows, img_cols = 224, 224 # Resolution of inputs
     channel = 1
-    num_classes = 13
-    batch_size = 16
+    num_classes = 11
+    batch_size = 32
     nb_epoch = 20
     train_ratio = 0.7
 
-    X_train, Y_train, X_valid, Y_valid,_ = load_data('/home/maoshunyi/moyamoya/test_image', '/home/maoshunyi/moyamoya/train_img/ap_label.xlsx', (img_rows, img_cols), num_classes, train_ratio)
+    X_train, Y_train, X_valid, Y_valid,_ = load_data('./test_image_bak', './train_img/ap_label.xlsx', (img_rows, img_cols), num_classes, train_ratio)
     # Load our model
 
     image_size = 224
@@ -57,7 +57,6 @@ if __name__ == '__main__':
 
     # Add new layers
     model.add(layers.Flatten())
-    model.add(layers.Dropout(0.5))
     model.add(layers.Dense(1024, activation='relu'))
     model.add(layers.Dropout(0.5))
     model.add(layers.Dense(13, activation='softmax'))
@@ -65,8 +64,8 @@ if __name__ == '__main__':
     # Show a summary of the model. Check the number of trainable parameters
     model.summary()
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
-    adam = Adam(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
+    # adam = Adam(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
     # Start Fine-tuning
     model.fit(X_train, Y_train,

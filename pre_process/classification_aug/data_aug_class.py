@@ -29,7 +29,7 @@ def gen_images(data,type_all,aug_amount,img_input_dir, img_output):
     image_name = data['filename']
     img_type = data['label']
     img_address = data['dsa_path']
-    output_name = "aug_labels.csv"
+    output_name = "aug_labels_0to3.csv"
     add_names = []
     add_type = []
     add_address = []
@@ -82,8 +82,8 @@ if __name__ == '__main__':
     img_input_dir = "./test_image//"
     img_output = "./image_gen//"
 
-    type_all = [4, 5, 6, 7, 8, 9, 10]  # The types need to be augumented
-    aug_amount = 25  # add images anount
+    type_all = [0,1,2,3]  # The types need to be augumented
+    aug_amount = 8  # add images anount
     gen_images(data,type_all,aug_amount,img_input_dir,img_output)
 
 
