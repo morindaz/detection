@@ -7,15 +7,27 @@ import pandas as pd
 data_file_ali = "./xlsx/ali.xlsx"
 data_file_gaoyan = "./xlsx/gaoyan.xlsx"
 data_file_label = "./xlsx/final_ocr.xlsx"
+txt_file = "./xlsx/top_30.txt"
 
 def read_file(file):
     data_file =pd.read_excel(file, header=0)
-    data_address = data_file["address"].values
-    data_company = data_file["company_name"].values
-    data_establish = data_file["establish"].values
-    data_person = data_file["person"].values
-    data_reg_num = data_file["reg_num"].values
+    data_address = data_file["address"].values[txt]
+    data_company = data_file["company_name"].values[txt]
+    data_establish = data_file["establish"].values[txt]
+    data_person = data_file["person"].values[txt]
+    data_reg_num = data_file["reg_num"].values[txt]
     return data_address,data_company,data_establish,data_person,data_reg_num,data_file
+
+def read_txt(txt):
+    total_txt = []
+    with open(txt, 'r') as f:
+        data = f.readlines()  # txt中所有字符串读入data
+        print(data)
+    for i in data:
+        total_txt.append(int(i.strip()))
+    print(total_txt)
+    return total_txt
+
 
 def cal_each_acc(data_ali,data_gaoyan,label,name):
     each_count_ali = 0
@@ -34,6 +46,7 @@ def cal_each_acc(data_ali,data_gaoyan,label,name):
     return acc_ali,acc_gaoyan
 
 
+txt = read_txt(txt_file)
 
 data_ali_address,data_ali_company,data_ali_establish,\
 data_ali_person,data_ali_reg_num,ali_file = read_file(data_file_ali)
@@ -51,9 +64,9 @@ person_acc_ali, person_acc_gaoyan = cal_each_acc(data_ali_person,data_gaoyan_per
 reg_num_acc_ali, reg_num_acc_gaoyan = cal_each_acc(data_ali_reg_num,data_gaoyan_reg_num,data_label_reg_num,"reg_num_acc")
 
 
-data_ali =ali_file.values
-data_gaoyan = gaoyan_file.values
-data_label = label_file.values
+data_ali =ali_file.values[txt,:]
+data_gaoyan = gaoyan_file.values[txt,:]
+data_label = label_file.values[txt,:]
 print("load file successfully")
 ali_count = 0
 gaoyan_count = 0
