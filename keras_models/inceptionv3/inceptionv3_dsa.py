@@ -5,7 +5,7 @@ from sklearn.metrics import log_loss, confusion_matrix
 
 sys.path.append('../../DenseNet-Keras')
 
-from keras_models.vgg.load_data import load_data
+from keras_models.vgg.load_data import load_data, load_data_new
 from keras.optimizers import SGD
 from keras.applications.vgg16 import VGG16
 from keras import models
@@ -30,16 +30,16 @@ if __name__ == '__main__':
 
     img_rows, img_cols = 224, 224 # Resolution of inputs
     channel = 1
-    num_classes = 13
+    num_classes = 11
     batch_size = 16
     nb_epoch = 20
     train_ratio = 0.7
 
-    X_train, Y_train, X_valid, Y_valid,_ = load_data('/home/maoshunyi/moyamoya/test_image', '/home/maoshunyi/moyamoya/train_img/ap_label.xlsx', (img_rows, img_cols), num_classes, train_ratio)
+    X_train, Y_train, X_valid, Y_valid, Y_img_name = load_data_new('/home/maoshunyi/moyamoya/data/new_ap/train', '/home/maoshunyi/moyamoya/data/new_ap/train/label.xlsx', '/home/maoshunyi/moyamoya/data/new_ap/test', '/home/maoshunyi/moyamoya/data/new_ap/test/label.xlsx',(img_rows, img_cols), num_classes)
     # Load our model
 
     image_size = 224
-    inceptionV3_conv = InceptionV3(weights=None,include_top=False, input_shape=(image_size, image_size, 1), classes=num_classes)
+    inceptionV3_conv = InceptionV3(weights=None,include_top=True,input_shape=(image_size, image_size, 1), classes=num_classes)
     print(inceptionV3_conv.summary())
 
     # Freeze the layers except the last 4 layers
@@ -57,10 +57,10 @@ if __name__ == '__main__':
     model.add(inceptionV3_conv)
 
     # Add new layers
-    model.add(layers.Flatten())
-    model.add(layers.Dense(1024, activation='relu'))
-    model.add(layers.Dropout(0.5))
-    model.add(layers.Dense(13, activation='softmax'))
+    # model.add(layers.Flatten())
+    # model.add(layers.Dense(1024, activation='relu'))
+    # model.add(layers.Dropout(0.5))
+    # model.add(layers.Dense(13, activation='softmax'))
 
     # Show a summary of the model. Check the number of trainable parameters
     model.summary()

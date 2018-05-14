@@ -8,7 +8,7 @@ import keras.backend as K
 from keras.utils import np_utils
 import os
 import pandas as pd
-from pre_process.unet_augumentation.data_argumentation_unet import DataArgumentation
+from pre_process.classification_aug.data_aug_class import DataAugumentation
 
 artery_label_dict = {
     'AP_LICA': 0,

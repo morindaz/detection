@@ -1,4 +1,9 @@
+# -*- coding:utf-8 -*-
+"""
+包含了unet的网络以及训练，存储图片的代码
+"""
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 from keras.models import *
 from keras.layers import Input, merge, Conv2D, MaxPooling2D, UpSampling2D, Dropout
 from keras.optimizers import *
@@ -8,19 +13,17 @@ from unet.data_process import *
 class myUnet(object):
 
 	def __init__(self, img_rows = 512, img_cols = 512):
-
 		self.img_rows = img_rows
 		self.img_cols = img_cols
 
 	def load_data(self):
-
 		mydata = dataProcess(self.img_rows, self.img_cols)
 		imgs_train, imgs_mask_train = mydata.load_train_data()
 		imgs_test = mydata.load_test_data()
 		return imgs_train, imgs_mask_train, imgs_test
 
+	#定义Unet网络结构
 	def get_unet(self):
-
 		inputs = Input((self.img_rows, self.img_cols,1))
 		
 		'''
@@ -145,23 +148,25 @@ class myUnet(object):
 
 
 	def train(self):
-
+		#载入训练数据，mask，测试数据，载入网络
 		print("loading data")
 		imgs_train, imgs_mask_train, imgs_test = self.load_data()
 		print("loading data done")
 		model = self.get_unet()
 		print("got unet")
 
+        #如果有预训练的模型就加载，没有就创建新模型
 		model_checkpoint = ModelCheckpoint('./unet_dsa.hdf5', monitor='loss',verbose=1, save_best_only=True)
 		print('Fitting model...')
 		model.fit(imgs_train, imgs_mask_train, batch_size=4, epochs=7, verbose=1,validation_split=0.2, shuffle=True, callbacks=[model_checkpoint])
 
 		print('predict test data')
 		imgs_mask_test = model.predict(imgs_test, batch_size=1, verbose=1)
+		#将预测的数据以npy形式存放到对应的路径中
 		np.save('./train_results/imgs_mask_test.npy', imgs_mask_test)
 
+	# 将对应的npy文件转换成图片的形式保存
 	def save_img(self):
-
 		print("array to image")
 		imgs = np.load('./train_results/imgs_mask_test.npy')
 		for i in range(imgs.shape[0]):

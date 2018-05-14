@@ -1,6 +1,10 @@
+# -*- coding:utf-8 -*-
 '''
 This file is used for loading the existing hdf5 and then save the predicted images
 to the file.
+保存一份测试图像的二进制npy文件，一份测试图像的标签，防止label与经过图像分割后
+的标签无法对上。
+使用训练好的hdf5模型进行预测，将图像存储到对应文件夹
 '''
 from unet.unet import *
 # from data_process import *
